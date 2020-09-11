@@ -18,6 +18,7 @@ jobs:
       - name: Checkout previous commit 2/2
         run: |
           git --git-dir ./previous/.git fetch
+          git --git-dir ./previous/.git checkout master
           git --git-dir ./previous/.git checkout HEAD~1
       - name: Set up Python 3.7
         uses: actions/setup-python@v1
