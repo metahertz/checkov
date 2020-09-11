@@ -26,6 +26,7 @@ jobs:
           python-version: 3.7
       - name: Install dependencies
         run: |
+          python3 -m pip install pipenv
           pipenv install --dev
       - name: List and Diff Checks
         run: |
