@@ -33,4 +33,4 @@ jobs:
           PYTHONPATH=${PWD} pipenv run python ./checkov/main.py -l > latest-checks.txt
           PYTHONPATH=${PWD} pipenv run python ./previous/checkov/main.py -l > previous-checks.txt
           DIFF=$(diff previous-checks.txt latest-checks.txt)
-          if [[ $DIFF ! = "" ]]; then echo "Diff exists, new check! \n "; echo ${DIFF}; fi
+          if [[ $DIFF != "" ]]; then echo "Diff exists, new check! \n "; echo ${DIFF}; fi
