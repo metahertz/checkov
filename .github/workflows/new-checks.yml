@@ -49,10 +49,10 @@ jobs:
               icon_emoji: ':octocat:',
               attachments: [{
                 color: 'good',
-                text: `Whoo! Checkov has a new check! \n Thanks ${process.env.AS_AUTHOR}!! \n Check ID: Test \n Check Details: Test2 \n in commit: ${process.env.AS_COMMIT} at ${process.env.AS_REPO} \n ${CHECKDIFF}`,
+                text: `Whoo! Checkov has a new check! \n Thanks ${process.env.AS_AUTHOR}!! \n Check ID: Test \n Check Details: Test2 \n in commit: ${process.env.AS_COMMIT} at ${process.env.AS_REPO} \n ${process.env.CHECKDIFF}`,
               }]
             }
         env:
           GITHUB_TOKEN: ${{ github.token }} # optional
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-        if: env.CHECKDIFF
+        if: process.env.CHECKDIFF
