@@ -45,10 +45,10 @@ jobs:
               icon_emoji: ':octocat:',
               attachments: [{
                 color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
-                text: `${process.env.AS_WORKFLOW}\n${process.env.AS_JOB} (${process.env.AS_COMMIT}) of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR} succeeded in ${process.env.AS_TOOK}`,
+                text: `Whoo! Checkov has a new check! Thanks ${process.env.AS_AUTHOR}!! \n Check ID: Test \n Check Details: Test2 \n in commit: ${process.env.AS_COMMIT}) at ${process.env.AS_REPO}`,
               }]
             }
         env:
-          #GITHUB_TOKEN: ${{ github.token }} # optional
+          GITHUB_TOKEN: ${{ github.token }} # optional
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
         if: always() # Pick up events even if the job fails or is canceled.
