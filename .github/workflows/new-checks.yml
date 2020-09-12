@@ -30,9 +30,11 @@ jobs:
           pipenv install --dev
       - name: List and Diff Checks
         run: |
-          /bin/bash -c "PYTHONPATH=${PWD} pipenv run python ./checkov/main.py -l | awk -F"|" '{ print $3 "|"  $4 "|" $5 "|" $6 "|" $7 }' > latest-checks.txt"
-          /bin/bash -c "PYTHONPATH=${PWD}/previous pipenv run python ./previous/checkov/main.py -l | awk -F"|" '{ print $3 "|"  $4 "|" $5 "|" $6 "|" $7 }' > previous-checks.txt"
-          export DIFF=$(diff previous-checks.txt latest-checks.txt)
+          PYTHONPATH=${PWD} pipenv run python ./checkov/main.py -l > latest-checks.txt 
+          awk -F"|" '{ print $3 "|"  $4 "|" $5 "|" $6 "|" $7 }' latest-checks.txt > latest-filtered.txt
+          PYTHONPATH=${PWD}/previous pipenv run python ./previous/checkov/main.py -l > previous-checks.txt
+          awk -F"|" '{ print $3 "|"  $4 "|" $5 "|" $6 "|" $7 }' previous-checks.txt > previous-filtered.txt
+          export DIFF=$(diff previous-filtered.txt latest-filtered.txt)
           echo ${DIFF}
           if [[ $DIFF != "" ]]; then echo "Diff exists, new check! \n "; echo ${DIFF}; else echo "No new checks this commit. Skipping Slack update" ; fi
       - name: Send slack message to CodifiedSecurity
