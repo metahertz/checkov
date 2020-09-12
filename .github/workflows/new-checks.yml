@@ -37,9 +37,8 @@ jobs:
           export DIFF=$(diff previous-filtered.txt latest-filtered.txt)
           echo ${DIFF}
           if [[ $DIFF != "" ]]; then echo "Diff exists, new check!"; echo ${DIFF}; else echo "No new checks this commit. Skipping Slack update" ; fi
-      - name: test ENV
-        run: |
-          echo ${DIFF}     
+      - name: test
+        run: echo ${DIFF}     
       - name: Send slack message to CodifiedSecurity
         uses: 8398a7/action-slack@v3
         with:
