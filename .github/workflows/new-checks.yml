@@ -34,3 +34,12 @@ jobs:
           PYTHONPATH=${PWD} pipenv run python ./previous/checkov/main.py -l > previous-checks.txt
           DIFF=$(diff previous-checks.txt latest-checks.txt)
           if [[ $DIFF != "" ]]; then echo "Diff exists, new check! \n "; echo ${DIFF}; else echo "No new checks this commit. Skipping Slack update" ; fi
+      - name: Send slack message to CodifiedSecurity
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took # selectable (default: repo,message)
+        env:
+          #GITHUB_TOKEN: ${{ github.token }} # optional
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        if: always() # Pick up events even if the job fails or is canceled.
