@@ -32,7 +32,10 @@ jobs:
         run: |
           PYTHONPATH=${PWD} pipenv run python ./checkov/main.py -l > latest-checks.txt
           PYTHONPATH=${PWD} pipenv run python ./previous/checkov/main.py -l > previous-checks.txt
+          cat latest-checks.txt
+          cat previous-checks.txt
           export DIFF=$(diff previous-checks.txt latest-checks.txt)
+          echo ${DIFF}
           if [[ $DIFF != "" ]]; then echo "Diff exists, new check! \n "; echo ${DIFF}; else echo "No new checks this commit. Skipping Slack update" ; fi
       - name: Send slack message to CodifiedSecurity
         uses: 8398a7/action-slack@v3
