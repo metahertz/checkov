@@ -52,4 +52,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }} # optional
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-        if: ${{ env.DIFF }} 
+        if: env.DIFF != ""
