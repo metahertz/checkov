@@ -35,8 +35,12 @@ jobs:
           PYTHONPATH=${PWD}/previous pipenv run python ./previous/checkov/main.py -l > previous-checks.txt
           awk -F"|" '{ print $3 "|"  $4 "|" $5 "|" $6 "|" $7 }' previous-checks.txt > previous-filtered.txt
           diff previous-filtered.txt latest-filtered.txt > diff.txt
+<<<<<<< HEAD
           export DIFF=$(awk -F"<" '{ print $2 }' diff.txt)
           echo "::set-env name=CHECKDIFF::${DIFF}"
+=======
+          echo "::set-env name=CHECKDIFF::$(awk -F"<" '{ print $2 }' diff.txt)"
+>>>>>>> 31f5f76f83a7ceecd80ff4a46b5216f357992963
           echo ${CHECKDIFF}
           if [[ $DIFF != "" ]]; then echo "Diff exists, new check!"; echo ${DIFF}; else echo "No new checks this commit. Skipping Slack update" ; fi 
       - name: Send slack message to CodifiedSecurity
