@@ -20,6 +20,8 @@ CFN_RESOURCES_TOKEN = 'resources'
 PROVIDER_TOKEN = 'provider'
 FUNCTIONS_TOKEN = 'functions'
 ENVIRONMENT_TOKEN = 'environment'
+STACK_TAGS_TOKEN = 'stackTags'
+TAGS_TOKEN = 'tags'
 SUPPORTED_PROVIDERS = ['aws']
 
 DEFAULT_VAR_PATTERN = "\\${([^{}]+?)}"
@@ -67,8 +69,7 @@ def is_checked_sls_template(template):
         if isinstance(template['provider'], str_node):
             if template['provider'] not in SUPPORTED_PROVIDERS:
                 return False
-        if template_contains_cfn_resources(template) or template_contains_key(template, FUNCTIONS_TOKEN):
-            return True
+        return True
     return False
 
 
@@ -153,11 +154,14 @@ Generic processing loop for variables.
                     # If we can't find a value, skip it
                     if source_value is None:
                         continue
+                    try:
+                        if altered_value == match[0]:           # complete replacement
+                            altered_value = source_value
+                        else:                                   # partial replacement
 
-                    if altered_value == match[0]:           # complete replacement
-                        altered_value = source_value
-                    else:                                   # partial replacement
-                        altered_value = altered_value.replace(match[0], source_value)
+                            altered_value = altered_value.replace(match[0], source_value)
+                    except TypeError:
+                        pass
                 if value != altered_value:
                     data_map[key] = altered_value
                     made_change = True
