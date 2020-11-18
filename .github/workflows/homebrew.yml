@@ -1,8 +1,9 @@
 name: homebrew
 
 on:
-  push:
-    tags: '*'
+  release:
+    types:
+      - created
 
 jobs:
   homebrew:
