@@ -115,7 +115,7 @@ def run(banner=checkov_banner, argv=sys.argv[1:]):
                 bc_integration.persist_scan_results(scan_reports)
                 url = bc_integration.commit_repository(args.branch)
 
-            exit_codes.append(runner_registry.print_reports(scan_reports, args, url))
+            exit_codes.append(runner_registry.print_reports(scan_reports, args, url, bc_integration))
 
         exit_code = 1 if 1 in exit_codes else 0
         return exit_code
@@ -129,7 +129,7 @@ def run(banner=checkov_banner, argv=sys.argv[1:]):
             bc_integration.persist_repository(root_folder)
             bc_integration.persist_scan_results(scan_reports)
             url = bc_integration.commit_repository(args.branch)
-        return runner_registry.print_reports(scan_reports, args, url)
+        return runner_registry.print_reports(scan_reports, args, url, bc_integration)
     elif args.docker_image:
         if args.bc_api_key is None:
             parser.error("--bc-api-key argument is required when using --docker-image")

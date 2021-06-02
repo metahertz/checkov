@@ -14,7 +14,7 @@ from checkov.terraform.parser import Parser
 CHECK_BLOCK_TYPES = frozenset(["resource", "data", "provider", "module"])
 OUTPUT_CHOICES = ['cli', 'json', 'junitxml', 'github_failed_only']
 
-from checkov.common.bridgecrew.platform_integration import BcPlatformIntegration
+#from checkov.common.bridgecrew.platform_integration import BcPlatformIntegration
 
 
 class RunnerRegistry(object):
@@ -29,7 +29,7 @@ class RunnerRegistry(object):
         self.banner = banner
         self.scan_reports = []
         self.filter_runner_framework()
-        self.bc_platform = BcPlatformIntegration()
+        #self.bc_platform = BcPlatformIntegration()
 
     @abstractmethod
     def extract_entity_details(self, entity):
@@ -52,7 +52,7 @@ class RunnerRegistry(object):
                 self.scan_reports.append(scan_report)
         return self.scan_reports
 
-    def print_reports(self, scan_reports, args, url=None):
+    def print_reports(self, scan_reports, args, url=None, bc_integration=None ):
         if args.output == 'cli':
             print(f"{self.banner}\n")
         exit_codes = []
@@ -88,7 +88,7 @@ class RunnerRegistry(object):
             else:
                 print(json.dumps(report_jsons, indent=4))
         if args.output == "cli":
-            self.bc_platform.get_report_to_platform(args,scan_reports)
+            bc_integration.get_report_to_platform(args,scan_reports)
 
         exit_code = 1 if 1 in exit_codes else 0
         return exit_code
